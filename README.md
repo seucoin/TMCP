@@ -1,41 +1,61 @@
-# TMCP — Topology Matching for Confidence Prediction in Dynamic Uncertain Knowledge Graphs
+# TMCP
 
-This repository contains the official implementation of "Topology Matching for Confidence Prediction in Dynamic Uncertain Knowledge Graphs" (WISE 2026).
+Official implementation of **Topology Matching for Confidence Prediction in Dynamic Uncertain Knowledge Graphs** (WISE 2026).
 
-Abstract
+TMCP addresses dynamic uncertain knowledge graph confidence prediction (DUKGCP), where newly emerging entities may be unavailable during training. It predicts the confidence of facts involving emerging entities by matching expected topologies and aggregating structural evidence.
 
-TMCP addresses the problem of confidence prediction in dynamic uncertain knowledge graphs (DUKGCP), where previously unseen (emerging) entities appear at inference time and are absent during training. TMCP estimates the confidence of candidate facts by matching predicted local topologies to the observed support graph of the emerging entities and by aggregating multi-scale structural evidence.
+<p align="center">
+<img src="https://github.com/user-attachments/assets/ad7411f9-0f45-48c0-a320-c9b5575637b2" alt="architecture" width="75%" />
+</p>
 
-Key contributions
+## Requirements
 
-- A topology-matching framework that estimates how well a candidate fact fits the expected local topology of the query entity.
-- A set of modular components: ETER (expected topology estimation), RTEA (local evidence aggregation), FCE (confidence encoding with Fourier features), and GLA (global long-range aggregation).
-- An evaluation protocol for dynamic uncertain KGs that simulates emerging entities with a fixed-model inference procedure.
+We recommend creating a Python virtual environment (venv or conda) and installing the required packages.
 
-Method overview
+Example (conda):
 
-- ETER: Given the head entity and relation, ETER predicts an expected subgraph/topology reflecting plausible neighbor patterns.
-- RTEA: Aggregates structural evidence and supports across the neighborhood of the target node to provide robust local features.
-- FCE: Encodes continuous confidence values using Fourier-feature mappings to enrich representation capacity.
-- GLA: Captures global and long-range structural context complementary to local evidence.
+```bash
+conda create -n tmcp python=3.10 -y
+conda activate tmcp
+pip install -r requirements.txt
+```
 
-Datasets and evaluation
+Minimum packages used in development:
 
-We evaluate TMCP on the CN15k and NL27k datasets under dynamic settings. Dataset statistics used in our experiments:
+```
+torch >= 2.1.1
+transformers >= 4.38.2
+wandb >= 0.16.1
+numpy
+scipy
+```
+
+(If this repository does not include a requirements.txt, please run pip install for the packages above or create one from your environment.)
+
+## Main Components
+
+- ETER: infers expected topology from the query head entity and relation.
+- RTEA: aggregates structural evidence around the target entity.
+- FCE: encodes confidence scores with Fourier features.
+- GLA: captures long-range global structural information.
+
+## Datasets
+
+We evaluate TMCP on CN15k and NL27k.
 
 | Dataset   | #Entities  | #Relations | #Train   | #Valid | #Test  |
 | --------- | ---------- | ---------- | -------- | ------ | ------ |
 | CN15k     | 15,000     | 36         | 204,984  | 16,881 | 19,293 |
 | NL27k     | 27,221     | 404        | 149,001  | 12,278 | 14,034 |
 
-Dynamic evaluation: for each dataset we construct settings with N ∈ {10, 100, 1000} emerging entities:
+For dynamic evaluation we construct settings with N ∈ {10, 100, 1000} emerging entities:
 
 ```
 CN15k-10   CN15k-100   CN15k-1000
 NL27k-10   NL27k-100   NL27k-1000
 ```
 
-Each experimental split contains the following files:
+Each generated dataset contains the following files:
 
 ```
 train.txt
@@ -44,48 +64,39 @@ valid.txt
 test.txt
 ```
 
-Training is performed only on facts that involve old (non-emerging) entities. At inference time, the model parameters remain fixed and the support graph for emerging entities is provided to supply structural information.
+The model is trained only on facts involving old entities. At inference time, the support graph provides structural information for emerging entities while model parameters remain fixed.
 
-Installation and requirements
+## Files
 
-We recommend using a Python virtual environment. Example using conda:
+- `models/` contains model implementations for ETER, RTEA, FCE and GLA components.
+- `data/` contains dataset loading and preprocessing utilities.
+- `scripts/` contains training and evaluation scripts.
+- `configs/` contains example configuration files.
+- `README.md` this file.
 
-```bash
-conda create -n tmcp python=3.10 -y
-conda activate tmcp
-pip install -r requirements.txt
-```
+(Adjust paths above if your local tree uses different names.)
 
-Minimum packages used in development (specify precise versions in requirements.txt as needed):
+## Usage
 
-```
-torch >= 2.1.1
-transformers >= 4.38.2
-wandb >= 0.16.1
-numpy
-scipy
-PyYAML
-```
-
-If a requirements.txt is not present in this repository, create one from your environment or install the packages above.
-
-Usage
-
-Training example (adapt configuration paths as appropriate):
+Training example (replace config and dataset paths as needed):
 
 ```bash
 python scripts/train.py --config configs/cn15k.yaml
 ```
 
-Evaluation / inference example:
+Evaluate or predict confidence scores:
 
 ```bash
 python scripts/evaluate.py --config configs/cn15k.yaml --mode test
 ```
 
-Exposed arguments (examples — consult scripts for full set):
+If the repository provides other entry points, consult the `scripts/` folder and adapt commands accordingly.
 
-```
+## Argument Descriptions
+
+Common arguments used by training/evaluation scripts:
+
+```bash
 --data_path:      path to dataset folder
 --config:         path to yaml/JSON config file
 --batch_size:     batch size
@@ -96,43 +107,21 @@ Exposed arguments (examples — consult scripts for full set):
 --seed:           random seed
 ```
 
-Repository structure
+Configs are set in the `configs/` files; modify them when necessary.
 
-- models/        Implementation of ETER, RTEA, FCE, GLA and model wrappers
-- data/          Dataset loading and preprocessing utilities
-- scripts/       Training and evaluation scripts (train.py, evaluate.py, etc.)
-- configs/       Example configuration files used for experiments
-- experiments/   (optional) experiment logs and saved checkpoints
-- README.md      This document
+## Citation
 
-(Adjust the paths above if your local tree uses different names.)
-
-Reproducibility and experimental protocol
-
-- The dynamic evaluation protocol fixes model weights during inference for emerging entities; only the support graph is provided for those entities.
-- Reported metrics and hyperparameters should be logged alongside the experiment configuration files in `configs/` and the saved checkpoint metadata.
-
-Citation
-
-If you use TMCP in your research, please cite our WISE-2026 paper:
+If you use TMCP in your work, please cite our WISE-2026 paper:
 
 ```
 @inproceedings{tmcp2026,
   title={Topology Matching for Confidence Prediction in Dynamic Uncertain Knowledge Graphs},
-  author={Author, A. and Author, B. and Author, C.},
+  author={Authors, Example and Another, Person},
   booktitle={Proceedings of the Web Information Symposium (WISE)},
   year={2026}
 }
 ```
 
-Contact
+## Contact
 
-For questions, issues, or contributions please open an issue in this repository or contact the maintainers.
-
----
-
-This README was revised to adopt a formal, paper-style presentation suitable for archiving with the project release and linking from the WISE-2026 paper. If you would like, I can also:
-
-- Insert a formal abstract and full author list taken directly from the paper PDF.
-- Add an architecture diagram with a local image file and caption.
-- Produce a compact Quick Start subsection for newcomers.
+For questions, issues, or contributions, please open an issue or contact the maintainers.
