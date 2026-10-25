@@ -5,7 +5,7 @@ Official implementation of Topology Matching for Confidence Prediction in Dynami
 TMCP addresses dynamic uncertain knowledge graph confidence prediction (DUKGCP), where newly emerging entities may be unavailable during training. It predicts the confidence of facts involving emerging entities by combining structural evidence and topology-aware reasoning.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ad7411f9-0f45-48c0-a320-c9b5575637b2" alt="TMCP architecture" width="75%" />
+  <img src="TMCP.png" alt="TMCP architecture" width="75%" />
 </p>
 
 ## Overview
