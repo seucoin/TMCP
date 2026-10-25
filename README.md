@@ -106,14 +106,13 @@ python main.py \
 ```text
 .
 ├── main.py             # training / evaluation entry point
-├─��� dataloader.py       # dataset loading and graph construction
+├── dataloader.py       # dataset loading and graph construction
 ├── model.py            # TMCP model implementation
 ├── lightning.py        # PyTorch Lightning wrapper
 ├── metric.py           # evaluation metrics
 ├── requirement.txt     # dependencies
 ├── datasets.zip        # example datasets
 ├── README.md
-└── ...
 ```
 
 ---
