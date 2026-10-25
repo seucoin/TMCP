@@ -10,7 +10,7 @@ TMCP addresses dynamic uncertain knowledge graph confidence prediction (DUKGCP),
 
 ## Overview
 
-TMCP is a model for inductive confidence prediction in dynamic uncertain knowledge graphs. The method jointly considers:
+TMCP is a model for confidence prediction in dynamic uncertain knowledge graphs. The method jointly considers:
 
 - ETER: expected topology reasoning from the head entity and relation
 - RTEA: structural evidence aggregation around the target entity
