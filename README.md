@@ -39,8 +39,6 @@ The repository uses the following packages:
 - numpy
 - matplotlib
 
-> Note: The file in this repository is named `requirement.txt` (not `requirements.txt`).
-
 ---
 
 ## Dataset Preparation
@@ -57,8 +55,6 @@ Each line is typically in the format:
 ```text
 head<TAB>relation<TAB>tail<TAB>score
 ```
-
-The `score` field is optional and defaults to `1.0` when absent.
 
 The included archive `datasets.zip` can be extracted as follows:
 
@@ -105,32 +101,6 @@ python main.py \
 
 ---
 
-## Important CLI Arguments
-
-The main script supports the following key arguments:
-
-```bash
---data_path      Path to the dataset folder (required)
---batch_size     Batch size (default: 256)
---num_workers    Number of DataLoader workers (default: 4)
---d_model        Hidden dimension (default: 128)
---n_layers       Number of model layers (default: 2)
---top_k          Top-k aggregation value (default: 10)
---epochs         Training epochs (default: 100)
---lr             Learning rate (default: 1e-4)
---gpu            Number of GPUs to use (set to 0 for CPU)
---seed           Random seed (default: 42)
---save_dir       Directory for checkpoints
---drop_rate      DropEdge rate for augmentation (default: 0.4)
---conf_mask_prob Confidence masking probability (default: 0.6)
---disable_conf   Disable confidence encoder
---disable_lre    Disable logic reasoning encoder
---disable_sfe    Disable structural feature encoder
---disable_former Disable global linear attention
-```
-
----
-
 ## Repository Structure
 
 ```text
@@ -148,14 +118,6 @@ The main script supports the following key arguments:
 
 ---
 
-## Notes
-
-- There is no `scripts/train.py` or `scripts/evaluate.py` in this repository; the actual training pipeline is implemented in `main.py`.
-- The script can continue into testing automatically after training, and it will use the best checkpoint if available.
-- The `--sweep` option exists, but the sweep-related list args are not defined in the current parser and therefore require additional implementation if you want to use sweep mode.
-
----
-
 ## Citation
 
 If you use TMCP in your work, please cite our WISE-2026 paper:
@@ -168,9 +130,3 @@ If you use TMCP in your work, please cite our WISE-2026 paper:
   year={2026}
 }
 ```
-
----
-
-## Contact
-
-For questions, issues, or contributions, please open an issue in the repository or contact the maintainers.
